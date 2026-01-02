@@ -21,7 +21,6 @@ const App: React.FC = () => {
 
     try {
       const results: NewsItem[] = [];
-      // Fix: Explicitly cast Array.from(uploaded) to File[] to ensure 'file' is correctly typed during iteration.
       for (const file of Array.from(uploaded) as File[]) {
         const item = await parseXMLFile(file);
         results.push(item);
@@ -51,7 +50,7 @@ const App: React.FC = () => {
   const selectedItem = files.find(f => f.id === selectedId);
 
   return (
-    <div className="flex h-screen w-full bg-slate-50 overflow-hidden">
+    <div className="flex h-screen w-full bg-slate-50 dark:bg-slate-950 overflow-hidden transition-colors duration-300">
       <Sidebar 
         files={files} 
         onSelect={(item) => setSelectedId(item.id)} 
@@ -62,16 +61,16 @@ const App: React.FC = () => {
 
       <main className="flex-1 relative overflow-hidden">
         {status === AppStatus.LOADING && (
-          <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm z-50 flex items-center justify-center">
             <div className="flex flex-col items-center gap-4">
-              <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-500 rounded-full animate-spin" />
-              <p className="text-indigo-600 font-semibold animate-pulse">Parsing XML Content...</p>
+              <div className="w-12 h-12 border-4 border-indigo-200 dark:border-indigo-900 border-t-indigo-500 dark:border-t-indigo-400 rounded-full animate-spin" />
+              <p className="text-indigo-600 dark:text-indigo-400 font-semibold animate-pulse">Parsing XML Content...</p>
             </div>
           </div>
         )}
 
         {errorMsg && (
-          <div className="p-4 m-8 bg-red-50 border border-red-200 text-red-600 rounded-xl flex items-center justify-between">
+          <div className="p-4 m-8 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-xl flex items-center justify-between">
             <span className="text-sm font-medium">{errorMsg}</span>
             <button onClick={() => setErrorMsg(null)} className="text-red-400 hover:text-red-600 font-bold">✕</button>
           </div>
@@ -81,15 +80,15 @@ const App: React.FC = () => {
           <DetailView item={selectedItem} onUpdate={handleUpdateItem} />
         ) : (
           <div className="h-full flex flex-col items-center justify-center p-12 text-center animate-in fade-in zoom-in-95 duration-700">
-            <div className="w-24 h-24 bg-indigo-50 rounded-3xl flex items-center justify-center mb-6 ring-1 ring-indigo-100">
-              <UploadIcon className="w-10 h-10 text-indigo-500" />
+            <div className="w-24 h-24 bg-indigo-50 dark:bg-indigo-900/20 rounded-3xl flex items-center justify-center mb-6 ring-1 ring-indigo-100 dark:ring-indigo-800">
+              <UploadIcon className="w-10 h-10 text-indigo-500 dark:text-indigo-400" />
             </div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">Welcome to Lumina</h3>
-            <p className="text-slate-500 max-w-sm mb-8">
+            <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">Welcome to Lumina</h3>
+            <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-8">
               Professional XML reviewer for media workflows. Upload your newsitem XML files to start reviewing and editing.
             </p>
             
-            <label className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all cursor-pointer flex items-center gap-3">
+            <label className="px-8 py-3 bg-indigo-600 dark:bg-indigo-500 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 dark:shadow-none hover:bg-indigo-700 dark:hover:bg-indigo-400 transition-all cursor-pointer flex items-center gap-3">
               <input type="file" multiple accept=".xml" className="hidden" onChange={handleFileUpload} />
               <FileIcon className="w-5 h-5" />
               Browse XML Files
