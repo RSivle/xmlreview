@@ -16,7 +16,7 @@ export const parseXMLFile = async (file: File): Promise<NewsItem> => {
     throw new Error(`No <newsitem> tag found in ${file.name}`);
   }
 
-  const getText = (selector: string) => xmlDoc.querySelector(selector)?.textContent?.trim() || 'N/A';
+  const getText = (selector: string) => xmlDoc.querySelector(selector)?.textContent?.trim() || '';
   const getAttr = (selector: string, attr: string) => xmlDoc.querySelector(selector)?.getAttribute(attr) || 'N/A';
 
   const metadata: NewsItemMetadata = {
@@ -34,12 +34,18 @@ export const parseXMLFile = async (file: File): Promise<NewsItem> => {
     }
   };
 
+  // Extract byline from attribute 'name' primarily, fallback to text content
+  const bylineElement = xmlDoc.querySelector('byline');
+  const byline = bylineElement?.getAttribute('name') || bylineElement?.textContent?.trim() || 'Anonymous';
+
   return {
     id: crypto.randomUUID(),
     filename: file.name,
     headline: getText('headline'),
     subheadline: getText('subheadline'),
+    intro: getText('intro'),
     story: getText('story'),
+    byline,
     metadata
   };
 };

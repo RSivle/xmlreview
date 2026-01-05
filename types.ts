@@ -19,7 +19,9 @@ export interface NewsItem {
   filename: string;
   headline: string;
   subheadline: string;
+  intro: string;
   story: string;
+  byline: string;
   metadata: NewsItemMetadata;
   aiSummary?: string;
 }
